@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.tobii.gaming.sdk": "file:C:/Users/kaktu/Documents/Projects/linka.plays-unity/Assets/Shell/Tobii",
     "com.unity.collab-proxy": "2.0.7",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.6",
