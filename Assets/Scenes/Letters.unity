@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd51aa8d4bde464583b04ffd282a3fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  letterPrefab: {fileID: 8848118121041060818, guid: a5b1a885139f94436a7fefd058b99682, type: 3}
+  letterTilePrefab: {fileID: 8848118121041060818, guid: a5b1a885139f94436a7fefd058b99682, type: 3}
   lettersToSpawn: ABCDEF
   lettersParent: {fileID: 725792461}
   placeBounds:

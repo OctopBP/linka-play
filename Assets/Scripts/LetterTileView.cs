@@ -1,4 +1,6 @@
+using System;
 using TMPro;
+using UniRx;
 using UnityEngine;
 
 namespace Tobi.Letters
@@ -18,21 +20,43 @@ namespace Tobi.Letters
 		[SerializeField] TMP_Text letterText;
 		[SerializeField] Transform selectedView;
 
-		[PublicAccessor] LetterValue letter;
-		[PublicAccessor] LetterState state = LetterState.Default;
-		
-		public void SetLetter(LetterValue letter)
+		public partial class Model
 		{
-			this.letter = letter;
-			letterText.SetText(letter.value);
-		}
+			[PublicAccessor] readonly LetterTileView backing;
+			
+			readonly LetterValue letter;
+			readonly ReactiveProperty<LetterState> state = new(LetterState.Default);
+			
+			public Model(LetterTileView backing, LetterValue letter, Vector3 position)
+			{
+				this.backing = backing;
+				this.letter = letter;
+				backing.transform.localPosition = position;
+				backing.letterText.SetText(letter.value);
 
-		public void PlaceToRandomPos(IRnd rnd, Bounds bounds)
-		{
-			var offset = bounds.center - bounds.size * 0.5f;
-			var x = offset.x + bounds.size.x * rnd.NextFloat() ;
-			var y = offset.y + bounds.size.y * rnd.NextFloat();
-			transform.localPosition = new Vector3(x, y, 0);
+				state.Subscribe(newState =>
+				{
+					switch (newState)
+					{
+						case LetterState.Default:
+							backing.selectedView.gameObject.SetActive(false);
+							break;
+						case LetterState.Hovered:
+							backing.selectedView.gameObject.SetActive(true);
+							break;
+						case LetterState.Selected:
+							backing.selectedView.gameObject.SetActive(true);
+							break;
+						default:
+							throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+					}
+				});
+			}
+
+			public void SetState(LetterState state)
+			{
+				this.state.Value = state;
+			}
 		}
 	}
 }
