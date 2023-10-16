@@ -1,4 +1,7 @@
 using System;
+using DG.Tweening;
+using LanguageExt;
+using LanguageExt.SomeHelp;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -25,7 +28,10 @@ namespace Tobi.Letters
 			[PublicAccessor] readonly LetterTileView backing;
 			
 			readonly LetterValue letter;
-			readonly ReactiveProperty<LetterState> state = new(LetterState.Default);
+			public readonly ReactiveProperty<LetterState> state = new(LetterState.Default);
+			readonly Settings settings = new Settings(timeToSelect: TimeSpan.FromSeconds(1));
+
+			Option<IDisposable> maybeHoverTimer;
 			
 			public Model(LetterTileView backing, LetterValue letter, Vector3 position)
 			{
@@ -36,19 +42,30 @@ namespace Tobi.Letters
 
 				state.Subscribe(newState =>
 				{
+					// Dispose hover timer on state change
+					maybeHoverTimer.IfSome(t => t.Dispose());
+					
 					switch (newState)
 					{
 						case LetterState.Default:
+							backing.transform.DOLocalMoveZ(0, .2f);
 							backing.selectedView.gameObject.SetActive(false);
 							break;
+						
 						case LetterState.Hovered:
+							backing.transform.DOLocalMoveZ(0, .2f);
 							backing.selectedView.gameObject.SetActive(true);
+
+							maybeHoverTimer = Observable
+								.Timer(settings._timeToSelect)
+								.Subscribe(_ => SetState(LetterState.Selected))
+								.ToSome();
 							break;
+						
 						case LetterState.Selected:
 							backing.selectedView.gameObject.SetActive(true);
+							backing.transform.DOLocalMoveZ(-0.5f, .2f); 
 							break;
-						default:
-							throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
 					}
 				});
 			}
