@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Infrastructure.Input;
@@ -16,11 +17,12 @@ namespace Tobi.Letters
 		[SerializeField] Bounds placeBounds;
 
 		readonly List<LetterTileView.Model> letters = new();
-		Option<LetterTileView.Model> maybeSelectedTile;
+		// Option<LetterTileView.Model> maybeSelectedTile;
 
 		// TODO: [Inject]
-		IRnd rnd = RandomAdapter.a(seed: 12345);
-		IInput input = new KeyboardInput();
+		readonly IRnd rnd = RandomAdapter.a(seed: 12345);
+		readonly IInput input = new KeyboardInput();
+		readonly Settings settings = new(timeToSelect: TimeSpan.FromSeconds(1));
 		
 		void Start()
 		{
@@ -28,10 +30,13 @@ namespace Tobi.Letters
 			{
 				var newLetter = Instantiate(letterTilePrefab, lettersParent);
 				var position = RandomPos(rnd, placeBounds);
-				var letterModel = new LetterTileView.Model(newLetter, letter: LetterValue.a(letter), position);
-				letterModel.state
-					.Where(state => state == LetterTileView.LetterState.Selected)
-					.Subscribe(_ => maybeSelectedTile = letterModel);
+				var letterModel = new LetterTileView.Model(
+					newLetter, letter: LetterValue.a(letter), position, settings, input
+				);
+
+				// letterModel.state
+				// 	.Where(state => state == LetterTileView.LetterState.Selected)
+				// 	.Subscribe(_ => maybeSelectedTile = letterModel);
 
 				letters.Add(letterModel);
 			}
@@ -47,26 +52,12 @@ namespace Tobi.Letters
 
 		void Update()
 		{
-			var ray = Camera.main.ScreenPointToRay(input.mousePosition);
+			var ray = Camera.main.ScreenPointToRay(input.mousePositionRx.Value);
 			if (!Physics.Raycast(ray, out var hit)) return;
 			
-			maybeSelectedTile.Match(
-				Some: tile => {
-					var targetPosition = new Vector3(
-						x: hit.point.x, y: hit.point.y, z: tile._backing.transform.localPosition.z
-					);
-					tile._backing.transform.DOLocalMove(targetPosition, 0.5f);
-				},
-				None: () => {
-					foreach (var letter in letters) {
-						var state = letter._backing.transform == hit.transform
-							? LetterTileView.LetterState.Hovered
-							: LetterTileView.LetterState.Default;
-
-						letter.SetState(state);
-					}		
-				}
-			);
+			foreach (var letter in letters) {
+				letter.Update();
+			}
 		}
 
 		void OnDrawGizmos()

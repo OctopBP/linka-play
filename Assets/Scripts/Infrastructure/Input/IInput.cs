@@ -1,10 +1,12 @@
+using UniRx;
 using UnityEngine;
 
 namespace Tobi.Letters.Infrastructure
 {
 	public interface IInput
 	{
-		Vector2 mousePosition { get; }
+		ReactiveProperty<Vector2> mousePositionRx { get; }
 		bool mouseButtonPressed { get; }
+		void Update();
 	}
 }
