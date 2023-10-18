@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using Infrastructure.Input;
-using LanguageExt;
 using Tobi.Letters.Infrastructure;
 using UniRx;
 using UnityEngine;
+using static LanguageExt.Prelude;
 
 namespace Tobi.Letters
 {
@@ -17,7 +16,6 @@ namespace Tobi.Letters
 		[SerializeField] Bounds placeBounds;
 
 		readonly List<LetterTileView.Model> letters = new();
-		// Option<LetterTileView.Model> maybeSelectedTile;
 
 		// TODO: [Inject]
 		readonly IRnd rnd = RandomAdapter.a(seed: 12345);
@@ -29,35 +27,38 @@ namespace Tobi.Letters
 			foreach (var letter in lettersToSpawn)
 			{
 				var newLetter = Instantiate(letterTilePrefab, lettersParent);
-				var position = RandomPos(rnd, placeBounds);
+				var position = RandomPos();
 				var letterModel = new LetterTileView.Model(
 					newLetter, letter: LetterValue.a(letter), position, settings, input
 				);
-
-				// letterModel.state
-				// 	.Where(state => state == LetterTileView.LetterState.Selected)
-				// 	.Subscribe(_ => maybeSelectedTile = letterModel);
-
 				letters.Add(letterModel);
 			}
+			
+			input.mousePositionRx.Subscribe(mousePosition =>
+			{
+				var ray = Camera.main.ScreenPointToRay(mousePosition);
+				if (!Physics.Raycast(ray, out var hit)) return;
+				
+				foreach (var letter in letters)
+				{
+					var isHovered = hit.transform == letter._backing.transform;
+					letter.Update(maybeHitPoint: isHovered ? hit.point : None);
+				}
+			});
 		}
 
-		static Vector3 RandomPos(IRnd rnd, Bounds bounds)
+		Vector3 RandomPos()
 		{
-			var offset = bounds.center - bounds.size * 0.5f;
-			var x = offset.x + bounds.size.x * rnd.NextFloat() ;
-			var y = offset.y + bounds.size.y * rnd.NextFloat();
-			return new Vector3(x, y, 0);
+			var offset = placeBounds.center - placeBounds.size * 0.5f;
+			var x = offset.x + placeBounds.size.x * rnd.NextFloat() ;
+			var y = offset.y + placeBounds.size.y * rnd.NextFloat();
+			return new(x, y, 0);
 		}
 
 		void Update()
 		{
-			var ray = Camera.main.ScreenPointToRay(input.mousePositionRx.Value);
-			if (!Physics.Raycast(ray, out var hit)) return;
-			
-			foreach (var letter in letters) {
-				letter.Update();
-			}
+			// TODO: Move to input service
+			input.Update();	
 		}
 
 		void OnDrawGizmos()

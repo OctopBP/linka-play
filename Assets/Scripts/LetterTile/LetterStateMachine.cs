@@ -1,38 +1,42 @@
-using Tobi.Letters.Infrastructure;
+using System;
+using LanguageExt;
+using LanguageExt.SomeHelp;
 using UniRx;
+using UnityEngine;
 
 namespace Tobi.Letters
 {
 	public class LetterStateMachine
 	{
-		IState currentState;
+		Option<IState> maybeCurrentState;
 		
-		readonly HoveredLetterTileState hoveredState; 
-		readonly DefaultLetterTileState defaultState;
-		readonly SelectedLetterTileState selectedState;
+		public readonly DefaultLetterTileState defaultState;
+		public readonly HoveredLetterTileState hoveredState;
+		public readonly SelectedLetterTileState selectedState;
 
-		readonly ReactiveProperty<bool> isHovered = new(false);
+		readonly ReactiveProperty<Option<Vector3>> maybeHitPointRx = new();
+
+		IObservable<bool> IsHoveredRx => maybeHitPointRx.Select(maybeHitPoint => maybeHitPoint.IsSome);
 		
-		public LetterStateMachine(LetterTileView.Model model, Settings settings, IInput input)
+		public LetterStateMachine(LetterTileView.Model model, Settings settings)
 		{
-			hoveredState = new(this, model._backing, settings, isHovered);
-			defaultState = new();
-			selectedState = new(model._backing, input.mousePositionRx);
+			hoveredState = new(this, model._backing, settings, IsHoveredRx);
+			defaultState = new(this, model._backing, IsHoveredRx);
+			selectedState = new(this, model._backing, maybeHitPointRx);
 
-			currentState = defaultState;
+			ChangeState(defaultState);
 		}
 
-		public void Update(bool isHovered)
+		public void Update(Option<Vector3> maybeHitPoint)
 		{
-			this.isHovered.Value = isHovered;
-			currentState.Update();
+			maybeHitPointRx.Value = maybeHitPoint;
 		}
 
 		public void ChangeState(IState newState)
 		{
-			currentState.OnExit();
-			currentState = newState;
-			currentState.OnEnter();
+			maybeCurrentState.IfSome(currentState => currentState.OnExit());
+			maybeCurrentState = newState.ToSome();
+			newState.OnEnter();
 		}
 	}
 }

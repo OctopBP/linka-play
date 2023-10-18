@@ -7,8 +7,8 @@ namespace Infrastructure.Input
 {
 	public class KeyboardInput: IInput
 	{
-		public ReactiveProperty<Vector2> mousePosition { get; } = new();
+		public ReactiveProperty<Vector2> mousePositionRx { get; } = new();
 		public bool mouseButtonPressed => false;
-		public void Update() => mousePosition.Value = UnityEngine.Input.mousePosition.XY();
+		public void Update() => mousePositionRx.Value = UnityEngine.Input.mousePosition.XY();
 	}
 }
