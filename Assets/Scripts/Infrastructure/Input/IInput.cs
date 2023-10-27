@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-namespace Tobi.Letters.Infrastructure
+namespace Infrastructure.Input
 {
 	public interface IInput
 	{

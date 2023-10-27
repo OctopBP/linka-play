@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tobi.Letters.Extensions
+namespace Extensions
 {
     public static class TransformExt
     {

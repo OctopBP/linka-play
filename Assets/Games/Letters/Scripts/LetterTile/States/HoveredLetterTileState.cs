@@ -1,8 +1,8 @@
 using System;
-using Tobi.Letters.Extensions;
+using Extensions;
 using UniRx;
 
-namespace Tobi.Letters
+namespace Game.Letters
 {
 	[GenConstructor]
 	public partial class HoveredLetterTileState : IState

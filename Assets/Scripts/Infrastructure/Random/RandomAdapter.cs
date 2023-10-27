@@ -1,6 +1,6 @@
 using System;
 
-namespace Tobi.Letters
+namespace Infrastructure
 {
 	[GenConstructor]
 	public partial class RandomAdapter: IRnd

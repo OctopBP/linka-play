@@ -1,4 +1,4 @@
-namespace Tobi.Letters
+namespace Infrastructure
 {
 	public interface IRnd
 	{

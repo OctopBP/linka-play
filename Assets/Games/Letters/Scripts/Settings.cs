@@ -1,6 +1,6 @@
 using System;
 
-namespace Tobi.Letters
+namespace Game.Letters
 {
 	[GenConstructor]
 	public partial class Settings

@@ -5,7 +5,7 @@ using LanguageExt.SomeHelp;
 using UniRx;
 using UnityEngine;
 
-namespace Tobi.Letters
+namespace Game.Letters
 {
 	public class LetterStateMachine
 	{

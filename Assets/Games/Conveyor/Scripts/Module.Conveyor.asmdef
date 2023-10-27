@@ -1,6 +1,6 @@
 {
     "name": "Module.Conveyor",
-    "rootNamespace": "",
+    "rootNamespace": "Game.Conveyor",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
