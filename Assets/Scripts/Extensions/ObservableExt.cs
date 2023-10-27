@@ -2,7 +2,7 @@ using System;
 using LanguageExt;
 using UniRx;
 
-namespace Tobi.Letters.Extensions
+namespace Extensions
 {
     public static class ObservableExt
     {

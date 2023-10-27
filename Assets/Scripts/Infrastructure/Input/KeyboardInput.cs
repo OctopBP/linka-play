@@ -1,5 +1,4 @@
-using Tobi.Letters.Extensions;
-using Tobi.Letters.Infrastructure;
+using Extensions;
 using UniRx;
 using UnityEngine;
 

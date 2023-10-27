@@ -1,10 +1,10 @@
-using System;
 using LanguageExt;
 using TMPro;
-using Tobi.Letters.Extensions;
+using Extensions;
+using Infrastructure;
 using UnityEngine;
 
-namespace Tobi.Letters
+namespace Game.Letters
 {
 	public partial class LetterTileView : MonoBehaviour
 	{

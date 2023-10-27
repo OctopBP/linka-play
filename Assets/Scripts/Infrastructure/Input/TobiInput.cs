@@ -1,9 +1,8 @@
-using Tobi.Letters.Infrastructure;
 using Tobii.Gaming;
 using UniRx;
 using UnityEngine;
 
-namespace Tobi.Letters.Input
+namespace Infrastructure.Input
 {
 	public class TobiInput: IInput
 	{

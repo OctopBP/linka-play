@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Infrastructure.Input;
-using Tobi.Letters.Extensions;
-using Tobi.Letters.Infrastructure;
+using Extensions;
+using Infrastructure;
 using UniRx;
 using UnityEngine;
 using static LanguageExt.Prelude;
 
-namespace Tobi.Letters
+namespace Game.Letters
 {
 	public class LetterLevelBootstrap : MonoBehaviour
 	{

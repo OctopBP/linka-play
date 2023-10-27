@@ -4,11 +4,11 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using LanguageExt;
 using LanguageExt.SomeHelp;
-using Tobi.Letters.Extensions;
+using Extensions;
 using UniRx;
 using UnityEngine;
 
-namespace Tobi.Letters
+namespace Game.Letters
 {
 	[GenConstructor]
 	public partial class SelectedLetterTileState : IState
