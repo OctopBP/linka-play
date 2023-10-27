@@ -1,7 +1,10 @@
 {
     "name": "Module.Main",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:22a2cf165a69f4aaba2cf787ed199f0c",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
