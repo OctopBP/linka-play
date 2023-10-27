@@ -1,6 +1,9 @@
 using System;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using LanguageExt;
+using LanguageExt.SomeHelp;
 using Tobi.Letters.Extensions;
 using UniRx;
 using UnityEngine;
@@ -12,26 +15,27 @@ namespace Tobi.Letters
 	{
 		readonly LetterStateMachine stateMachine;
 		readonly LetterTileView letterTile;
+		readonly Settings settings;
 		readonly ReactiveProperty<Option<Vector3>> maybeMousePosition;
 
-		const float LerpSpeed = 100;
+		const float LerpSpeed = 0.5f;
 		const float ZOffset = -0.5f;
 
 		[GenConstructorIgnore] IDisposable mouseFollow;
+		[GenConstructorIgnore] Option<IDisposable> maybeHoldTimer;
+		[GenConstructorIgnore] TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 		
 		public void OnEnter()
 		{
-			letterTile._stateText.SetText("Selected");
-			mouseFollow = maybeMousePosition.Subscribe(maybePosition =>
+			letterTile._rockRenderer.material.color = letterTile._selectedColor;
+			mouseFollow = maybeMousePosition.Collect(position =>
 			{
-				maybePosition.Match(
-					Some: position => letterTile.transform.localPosition = Vector3.Lerp(
-						a: letterTile.transform.localPosition,
-						b: position.WithZ(ZOffset),
-						t: Time.deltaTime * LerpSpeed
-					),
-					None: () => stateMachine.ChangeState(stateMachine.defaultState)
-				);
+				maybeHoldTimer.IfSome(holdTimer => holdTimer.Dispose());
+				maybeHoldTimer = Observable.Timer(settings.timeToSelect)
+					.Subscribe(_ => stateMachine.ChangeState(stateMachine.defaultState))
+					.ToSome();
+
+				letterTile.transform.localPosition = position.WithZ(ZOffset);
 			});
 		}
 

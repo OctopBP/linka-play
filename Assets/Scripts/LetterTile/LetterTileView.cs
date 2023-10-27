@@ -1,6 +1,7 @@
+using System;
 using LanguageExt;
 using TMPro;
-using Tobi.Letters.Infrastructure;
+using Tobi.Letters.Extensions;
 using UnityEngine;
 
 namespace Tobi.Letters
@@ -8,25 +9,28 @@ namespace Tobi.Letters
 	public partial class LetterTileView : MonoBehaviour
 	{
 		[SerializeField] TMP_Text letterText;
-		[SerializeField, PublicAccessor] TMP_Text stateText;
-		[SerializeField, PublicAccessor] Transform selectedView;
+		[SerializeField, PublicAccessor] Color defaultColor, hoveredColor, selectedColor, finishColor;
+		[SerializeField, PublicAccessor] MeshRenderer rockRenderer;
 
 		public partial class Model
 		{
 			[PublicAccessor] readonly LetterTileView backing;
 			readonly LetterStateMachine stateMachine;
 			
-			public Model(LetterTileView backing, LetterValue letter, Vector3 position, Settings settings, IInput input)
+			public Model(LetterTileView backing, LetterValue letter, Vector3 position, Settings settings, IRnd rnd)
 			{
 				this.backing = backing;
 				stateMachine = new(this, settings);
 				backing.transform.localPosition = position;
 				backing.letterText.SetText(letter.value);
+
+				backing._rockRenderer.transform.localEulerAngles =
+					backing._rockRenderer.transform.localEulerAngles.WithZ(rnd.NextFloat() * 360f);
 			}
 
-			public void Update(Option<Vector3> maybeHitPoint)
+			public void Update(Option<Vector3> maybeHitPoint, bool inTarget)
 			{
-				stateMachine.Update(maybeHitPoint: maybeHitPoint);
+				stateMachine.Update(maybeHitPoint: maybeHitPoint, inTarget: inTarget);
 			}
 		}
 	}

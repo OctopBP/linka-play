@@ -15,7 +15,7 @@ namespace Tobi.Letters
 
 		public void OnEnter()
 		{
-			letterTile._stateText.SetText("Default");
+			letterTile._rockRenderer.material.color = letterTile._defaultColor;
 			hover = isHoveredRx
 				.WhereTrue()
 				.Subscribe(_ => stateMachine.ChangeState(stateMachine.hoveredState));

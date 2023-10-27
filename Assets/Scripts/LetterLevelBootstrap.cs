@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Infrastructure.Input;
+using Tobi.Letters.Extensions;
 using Tobi.Letters.Infrastructure;
 using UniRx;
 using UnityEngine;
@@ -14,13 +15,14 @@ namespace Tobi.Letters
 		[SerializeField] string lettersToSpawn;
 		[SerializeField] Transform lettersParent;
 		[SerializeField] Bounds placeBounds;
+		[SerializeField] Bounds targetBounds;
 
 		readonly List<LetterTileView.Model> letters = new();
 
 		// TODO: [Inject]
 		readonly IRnd rnd = RandomAdapter.a(seed: 12345);
 		readonly IInput input = new KeyboardInput();
-		readonly Settings settings = new(timeToSelect: TimeSpan.FromSeconds(1));
+		readonly Settings settings = new(timeToSelect: TimeSpan.FromSeconds(1), timeToDrop: TimeSpan.FromSeconds(1));
 		
 		void Start()
 		{
@@ -29,7 +31,7 @@ namespace Tobi.Letters
 				var newLetter = Instantiate(letterTilePrefab, lettersParent);
 				var position = RandomPos();
 				var letterModel = new LetterTileView.Model(
-					newLetter, letter: LetterValue.a(letter), position, settings, input
+					backing: newLetter, letter: LetterValue.a(letter), position, settings, rnd: rnd
 				);
 				letters.Add(letterModel);
 			}
@@ -41,8 +43,13 @@ namespace Tobi.Letters
 				
 				foreach (var letter in letters)
 				{
-					var isHovered = hit.transform == letter._backing.transform;
-					letter.Update(maybeHitPoint: isHovered ? hit.point : None);
+					var letterTransform = letter._backing.transform;
+					var isHovered = hit.transform == letterTransform;
+					var inTarget = targetBounds.Contains(letterTransform.position.WithZ(targetBounds.center.z));
+					letter.Update(
+						maybeHitPoint: isHovered ? hit.point : None,
+						inTarget: inTarget
+					);
 				}
 			});
 		}
@@ -63,8 +70,10 @@ namespace Tobi.Letters
 
 		void OnDrawGizmos()
 		{
-			Gizmos.color = Color.green;
+			Gizmos.color = Color.yellow;
 			Gizmos.DrawWireCube(center: placeBounds.center, size: placeBounds.size);
+			Gizmos.color = Color.green;
+			Gizmos.DrawWireCube(center: targetBounds.center, size: targetBounds.size);
 			Gizmos.color = Color.white;
 		}
 	}

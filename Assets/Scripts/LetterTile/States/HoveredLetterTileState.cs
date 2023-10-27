@@ -16,10 +16,9 @@ namespace Tobi.Letters
 		
 		public void OnEnter()
 		{
-			letterTile._stateText.SetText("Hovered");
-			letterTile._selectedView.gameObject.SetActive(true);
+			letterTile._rockRenderer.material.color = letterTile._hoveredColor;
 			
-			hoverTimer = Observable.Timer(settings._timeToSelect)
+			hoverTimer = Observable.Timer(settings.timeToSelect)
 				.Subscribe(_ => stateMachine.ChangeState(stateMachine.selectedState));
 			
 			hoverRx = isHoveredRx
@@ -29,7 +28,6 @@ namespace Tobi.Letters
 
 		public void OnExit()
 		{
-			letterTile._selectedView.gameObject.SetActive(false);
 			hoverTimer.Dispose();
 			hoverRx.Dispose();
 		}
