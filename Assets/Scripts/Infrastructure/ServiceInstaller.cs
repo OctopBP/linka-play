@@ -9,7 +9,7 @@ namespace Infrastructure
         {
             Container.Bind<IRnd>().FromInstance(RandomAdapter.a(seed: 12345));
             Container.Bind<IInput>().FromInstance(new KeyboardInput());
-            Container.Bind<ISceneLoader>().FromInstance(new SceneLoader());
+            Container.Bind<SceneLoader>().FromInstance(new());
         }
     }
 }

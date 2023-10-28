@@ -1,12 +1,12 @@
-using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets;
 
 namespace Infrastructure
 {
-    public class SceneLoader : ISceneLoader
+    public class SceneLoader
     {
-        static void LoadSceneByName(string sceneName)
+        public void LoadScene(AssetReference assetReference)
         {
-            SceneManager.LoadScene(sceneName);
+            assetReference.LoadSceneAsync();
         }
     }
 }

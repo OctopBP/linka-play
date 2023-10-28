@@ -1,32 +1,37 @@
 using Infrastructure;
-using UnityEngine;
-using UnityEngine.UI;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
-namespace MainModule
+namespace Core
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] Button[] gameButtons;
+        [SerializeField] GameInfoSO[] gameInfos;
+        
+        [SerializeField] RectTransform buttonsParent;
+        [SerializeField] ButtonWithText gameButtonsPrefab;
 
-        ISceneLoader sceneLoader;
+        SceneLoader sceneLoader;
         
         [Inject]
-        void Construct(ISceneLoader sceneLoader)
+        void Construct(SceneLoader sceneLoader)
         {
             this.sceneLoader = sceneLoader;
         }
         
         void Start()
         {
-            for (var i = 0; i < gameButtons.Length; i++)
+            BuildMenu();
+        }
+
+        void BuildMenu()
+        {
+            foreach (var gameInfo in gameInfos)
             {
-                var gameButton = gameButtons[i];
-                gameButton.OnClickAsObservable().Subscribe(_ =>
-                {
-                    // sceneLoader
-                });
+                var button = Instantiate(gameButtonsPrefab, parent: buttonsParent);
+                button._buttonText.SetText(gameInfo._displayName);
+                button._button.OnClickAsObservable().Subscribe(_ => sceneLoader.LoadScene(gameInfo._scene));
             }
         }
     }

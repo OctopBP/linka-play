@@ -2,17 +2,17 @@ using Infrastructure;
 using UnityEngine;
 using Zenject;
 
-namespace MainModule
+namespace Core
 {
     /// <summary>
     /// Main entry point.
     /// </summary>
     public class Bootstrap : MonoBehaviour
     {
-        ISceneLoader sceneLoader;
+        SceneLoader sceneLoader;
 		
         [Inject]
-        void Construct(ISceneLoader sceneLoader)
+        void Construct(SceneLoader sceneLoader)
         {
             this.sceneLoader = sceneLoader;
         }
