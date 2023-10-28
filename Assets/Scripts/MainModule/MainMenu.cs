@@ -1,19 +1,33 @@
+using Infrastructure;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using Zenject;
 
-public class MainMenu : MonoBehaviour
+namespace MainModule
 {
-    [SerializeField] Button[] gameButtons;
-    
-    void Start()
+    public class MainMenu : MonoBehaviour
     {
-        foreach (var gameButton in gameButtons)
+        [SerializeField] Button[] gameButtons;
+
+        ISceneLoader sceneLoader;
+        
+        [Inject]
+        void Construct(ISceneLoader sceneLoader)
         {
-            gameButton.OnClickAsObservable().Subscribe(_ =>
+            this.sceneLoader = sceneLoader;
+        }
+        
+        void Start()
+        {
+            for (var i = 0; i < gameButtons.Length; i++)
             {
-                // TODO: load game
-            });
+                var gameButton = gameButtons[i];
+                gameButton.OnClickAsObservable().Subscribe(_ =>
+                {
+                    // sceneLoader
+                });
+            }
         }
     }
 }

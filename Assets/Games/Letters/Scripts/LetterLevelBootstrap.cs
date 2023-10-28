@@ -5,6 +5,7 @@ using Extensions;
 using Infrastructure;
 using UniRx;
 using UnityEngine;
+using Zenject;
 using static LanguageExt.Prelude;
 
 namespace Game.Letters
@@ -18,11 +19,17 @@ namespace Game.Letters
 		[SerializeField] Bounds targetBounds;
 
 		readonly List<LetterTileView.Model> letters = new();
-
-		// TODO: [Inject]
-		readonly IRnd rnd = RandomAdapter.a(seed: 12345);
-		readonly IInput input = new KeyboardInput();
 		readonly Settings settings = new(timeToSelect: TimeSpan.FromSeconds(1), timeToDrop: TimeSpan.FromSeconds(1));
+
+		IRnd rnd;
+		IInput input;
+		
+		[Inject]
+		void Construct(IRnd rnd, IInput input)
+		{
+			this.rnd = rnd;
+			this.input = input;
+		}
 		
 		void Start()
 		{
