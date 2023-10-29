@@ -1,7 +1,10 @@
 {
     "name": "Module.Conveyor",
     "rootNamespace": "Game.Conveyor",
-    "references": [],
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:22a2cf165a69f4aaba2cf787ed199f0c"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
