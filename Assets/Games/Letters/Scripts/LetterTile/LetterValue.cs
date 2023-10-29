@@ -5,9 +5,6 @@ namespace Game.Letters
 	{
 		public readonly string value;
 
-		public static LetterValue a(char character)
-		{
-			return new LetterValue(character.ToString());
-		}
+		public static LetterValue a(char character) => new(character.ToString());
 	}
 }

@@ -21,6 +21,7 @@ namespace Game.Letters
 			{
 				this.backing = backing;
 				stateMachine = new(this, settings);
+				
 				backing.transform.localPosition = position;
 				backing.letterText.SetText(letter.value);
 

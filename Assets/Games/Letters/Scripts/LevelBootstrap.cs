@@ -10,7 +10,7 @@ using static LanguageExt.Prelude;
 
 namespace Game.Letters
 {
-	public class LetterLevelBootstrap : MonoBehaviour
+	public class LevelBootstrap : MonoBehaviour
 	{
 		[SerializeField] LetterTileView letterTilePrefab;
 		[SerializeField] string lettersToSpawn;
