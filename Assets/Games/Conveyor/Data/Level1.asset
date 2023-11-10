@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   streakToWin: 5
-  letterRight: 65
-  letterLeft: 66
+  rightItem:
+    value: 66
+    emoji:
+      code: \U0001F63C
+  leftItem:
+    value: 78
+    emoji:
+      code: "\U0001F63C"

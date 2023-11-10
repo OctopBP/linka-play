@@ -10,6 +10,7 @@ namespace Game.Conveyor
         [SerializeField] LevelSetup levelSetup;
         [SerializeField] ItemOnConveyor itemOnConveyorPrefab;
         [SerializeField] TMP_Text leftText, rightText;
+        [SerializeField] ConveyorPath conveyorPath;
 
         class Model
         {

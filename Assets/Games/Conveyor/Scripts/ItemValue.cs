@@ -7,5 +7,6 @@ namespace Game.Conveyor
 	public partial class ItemValue
 	{
 		[SerializeField, PublicAccessor] char value;
+		[SerializeField, PublicAccessor] Emoji emoji;
 	}
 }
