@@ -6,7 +6,7 @@ namespace Infrastructure.Input
 	public interface IInput
 	{
 		ReactiveProperty<Vector2> mousePositionRx { get; }
-		bool mouseButtonPressed { get; }
+		ReactiveProperty<bool> mouseButtonPressedRx { get; }
 		void Update();
 	}
 }

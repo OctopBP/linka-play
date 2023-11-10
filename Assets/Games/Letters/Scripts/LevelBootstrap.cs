@@ -69,12 +69,6 @@ namespace Game.Letters
 			return new(x, y, 0);
 		}
 
-		void Update()
-		{
-			// TODO: Move to input service
-			input.Update();	
-		}
-
 		void OnDrawGizmos()
 		{
 			Gizmos.color = Color.yellow;
