@@ -43,7 +43,7 @@ namespace Game.Letters
 				letters.Add(letterModel);
 			}
 			
-			input.mousePositionRx.Subscribe(mousePosition =>
+			input.cursorPositionRx.Subscribe(mousePosition =>
 			{
 				var ray = Camera.main.ScreenPointToRay(mousePosition);
 				if (!Physics.Raycast(ray, out var hit)) return;

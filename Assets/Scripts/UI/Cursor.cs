@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using Extensions;
 using Infrastructure.Input;
@@ -7,6 +6,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using static LanguageExt.Prelude;
 
 namespace Core
 {
@@ -40,12 +40,27 @@ namespace Core
 			rect = GetComponent<RectTransform>();
 			
 			// Subscribe to input
-			input.mouseButtonPressedRx.WhereTrue().Subscribe(_ => OnSelect());
-			input.mousePositionRx.Subscribe(position => rect.anchoredPosition = position);
-		}
+			input.clickButtonPressedRx.WhereTrue().Subscribe(_ => OnSelect());
+			input.cursorPositionRx.Subscribe(position => rect.anchoredPosition = position);
 
-		// Update Input. TODO: Move in from here to InputProvider
-		void Update() => input.Update();
+			Option<Tween> maybeScaleTween = None;
+			input.clickProgressRx.Subscribe(maybeProgress => maybeProgress.Match(
+				Some: progress =>
+				{
+					maybeScaleTween.IfSome(scaleTween => scaleTween.Kill());
+					selectIndicator.SetActive();
+					selectIndicator.SetAlpha(0.5f);
+					selectIndicator.transform.localScale = Vector3.one * progress;
+				},
+				None: () =>
+				{
+					maybeScaleTween.IfSome(scaleTween => scaleTween.Kill());
+					maybeScaleTween = selectIndicator
+						.DOFade(0, 0.1f)
+						.OnComplete(selectIndicator.SetInactive);
+				}
+			));
+		}
 
 		void OnSelect()
 		{
