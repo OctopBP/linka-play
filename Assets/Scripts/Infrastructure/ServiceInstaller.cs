@@ -1,4 +1,3 @@
-using Infrastructure.Input;
 using Zenject;
 
 namespace Infrastructure
