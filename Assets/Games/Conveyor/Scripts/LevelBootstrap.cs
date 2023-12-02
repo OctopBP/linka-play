@@ -7,24 +7,24 @@ namespace Game.Conveyor
 {
     public class LevelBootstrap : MonoBehaviour
     {
-        [SerializeField] LevelSetup levelSetup;
-        [SerializeField] ItemOnConveyor itemOnConveyorPrefab;
-        [SerializeField] TMP_Text leftText, rightText;
+        [SerializeField] private LevelSetup levelSetup;
+        [SerializeField] private ItemOnConveyor itemOnConveyorPrefab;
+        [SerializeField] private TMP_Text leftText, rightText;
 
-        class Model
+        private class Model
         {
-            readonly ItemsFactory itemsFactory;
-            
-            Model(LevelBootstrap backing)
+            private readonly ItemsFactory _itemsFactory;
+
+            private Model(LevelBootstrap backing)
             {
-                itemsFactory = new ItemsFactory(backing.itemOnConveyorPrefab);
+                _itemsFactory = new ItemsFactory(backing.itemOnConveyorPrefab);
                 SetupTexts();
-                
+
                 void SetupTexts()
                 {
                     SetValue(backing.leftText, backing.levelSetup._leftItem);
                     SetValue(backing.rightText, backing.levelSetup._rightItem);
-                    
+
                     void SetValue(TMP_Text text, ItemValue item) => text.SetText(item._value.ToString());
                 }
             }
@@ -33,11 +33,11 @@ namespace Game.Conveyor
 
     class ItemsFactory
     {
-        readonly IObjectPool<ItemOnConveyor> pool;
+        private readonly IObjectPool<ItemOnConveyor> _pool;
 
         public ItemsFactory(ItemOnConveyor prefab)
         {
-            pool = new ObjectPool<ItemOnConveyor>(
+            _pool = new ObjectPool<ItemOnConveyor>(
                 createFunc: () => Object.Instantiate(prefab),
                 actionOnGet: item => item.SetActive(),
                 actionOnRelease: item => item.SetInactive(),
@@ -47,7 +47,7 @@ namespace Game.Conveyor
 
         public void CreateItem()
         {
-            pool.Get();
+            _pool.Get();
         }
     }
 }
