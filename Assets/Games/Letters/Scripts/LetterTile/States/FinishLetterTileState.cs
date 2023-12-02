@@ -10,7 +10,7 @@ namespace Game.Letters
 
 		public UniTask Enter()
 		{
-			letterTile._rockRenderer.material.color = letterTile._finishColor;
+			letterTile.RockRenderer.material.color = letterTile.FinishColor;
 			return default;
 		}
 

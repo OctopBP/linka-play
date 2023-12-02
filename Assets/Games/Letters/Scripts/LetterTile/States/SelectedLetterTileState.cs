@@ -28,7 +28,7 @@ namespace Game.Letters
 		
 		public UniTask Enter()
 		{
-			letterTile._rockRenderer.material.color = letterTile._selectedColor;
+			letterTile.RockRenderer.material.color = letterTile.SelectedColor;
 			mouseFollow = maybeMousePosition.Collect(position =>
 			{
 				maybeHoldTimer.IfSome(holdTimer => holdTimer.Dispose());

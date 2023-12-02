@@ -30,8 +30,8 @@ namespace Core
             foreach (var gameInfo in gameInfos)
             {
                 var button = Instantiate(gameButtonsPrefab, parent: buttonsParent);
-                button._buttonText.SetText(gameInfo._displayName);
-                button._button.OnClickAsObservable().Subscribe(_ => sceneLoader.LoadScene(gameInfo._scene));
+                button.ButtonText.SetText(gameInfo.DisplayName);
+                button.Button.OnClickAsObservable().Subscribe(_ => sceneLoader.LoadScene(gameInfo.Scene));
             }
         }
     }

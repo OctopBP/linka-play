@@ -29,8 +29,8 @@ namespace Game.Letters
 				backing.transform.localPosition = position;
 				backing.letterText.SetText(letter.value);
 
-				backing._rockRenderer.transform.localEulerAngles =
-					backing._rockRenderer.transform.localEulerAngles.WithZ(rnd.NextFloat() * 360f);
+				backing.RockRenderer.transform.localEulerAngles =
+					backing.RockRenderer.transform.localEulerAngles.WithZ(rnd.NextFloat() * 360f);
 			}
 
 			private void SetupStateMachine(LetterTileView backing, Settings settings)
