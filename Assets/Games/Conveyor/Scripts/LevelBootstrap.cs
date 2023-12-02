@@ -22,10 +22,10 @@ namespace Game.Conveyor
 
                 void SetupTexts()
                 {
-                    SetValue(backing.leftText, backing.levelSetup._leftItem);
-                    SetValue(backing.rightText, backing.levelSetup._rightItem);
+                    SetValue(backing.leftText, backing.levelSetup.LeftItem);
+                    SetValue(backing.rightText, backing.levelSetup.RightItem);
 
-                    void SetValue(TMP_Text text, ItemValue item) => text.SetText(item._value.ToString());
+                    void SetValue(TMP_Text text, ItemValue item) => text.SetText(item.Value.ToString());
                 }
             }
         }

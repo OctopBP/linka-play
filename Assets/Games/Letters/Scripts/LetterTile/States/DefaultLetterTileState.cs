@@ -17,7 +17,7 @@ namespace Game.Letters
 
 		public UniTask Enter()
 		{
-			letterTile._rockRenderer.material.color = letterTile._defaultColor;
+			letterTile.RockRenderer.material.color = letterTile.DefaultColor;
 			hover = isHoveredRx
 				.WhereTrue()
 				.Subscribe(_ => stateMachine.Enter<HoveredLetterTileState>().Forget());

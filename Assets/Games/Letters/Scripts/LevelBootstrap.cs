@@ -50,7 +50,7 @@ namespace Game.Letters
 				
 				foreach (var letter in letters)
 				{
-					var letterTransform = letter._backing.transform;
+					var letterTransform = letter.Backing.transform;
 					var isHovered = hit.transform == letterTransform;
 					var inTarget = targetBounds.Contains(letterTransform.position.WithZ(targetBounds.center.z));
 					letter.Update(

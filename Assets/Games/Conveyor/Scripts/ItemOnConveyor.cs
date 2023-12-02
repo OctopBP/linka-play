@@ -11,7 +11,7 @@ namespace Game.Conveyor
 		{
 			public Model(ItemOnConveyor backing, ItemValue itemValue)
 			{
-				backing.text.SetText(itemValue._value.ToString());
+				backing.text.SetText(itemValue.Value.ToString());
 			}
 		}
 	}
