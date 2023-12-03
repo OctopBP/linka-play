@@ -12,48 +12,49 @@ namespace Infrastructure.Input
 {
 	public class OnlyMouseInput : IInput
 	{
-		public ReactiveProperty<Vector2> cursorPositionRx { get; } = new();
-		public ReactiveProperty<bool> clickButtonPressedRx { get; } = new();
-		public ReactiveProperty<Option<float>> clickProgressRx { get; } = new();
+		public ReactiveProperty<Vector2> CursorPositionRx { get; } = new();
+		public ReactiveProperty<bool> ClickButtonPressedRx { get; } = new();
+		public ReactiveProperty<Option<float>> ClickProgressRx { get; } = new();
+		public ReactiveProperty<Option<Bounds>> MaybeSelectedBounds { get; } = new();
 		
 		/// <summary> Hom much time we should look at one point to emit mouse click. </summary>
-		const float TimeToClick = 1.5f;
+		private const float TimeToClick = 1.5f;
 		/// <summary> Delay after click and before start trying catch new click. </summary>
-		const float ClickTimeout = 0.5f;
+		private const float ClickTimeout = 0.5f;
 		/// <summary> Allowed movement that will not reset click emitting. </summary>
-		const float MoveThreshold = 10f;
-		
-		readonly CompositeDisposable disposables = new();
+		private const float MoveThreshold = 10f;
 
-		readonly Func<Vector2> getMousePosition;
-		readonly EventSystem eventSystem;
+		private readonly CompositeDisposable _disposables = new();
+
+		private readonly Func<Vector2> _getMousePosition;
+		private readonly EventSystem _eventSystem;
 		
 		public OnlyMouseInput(Func<Vector2> getMousePosition, EventSystem eventSystem)
 		{
-			this.getMousePosition = getMousePosition;
-			this.eventSystem = eventSystem;
+			_getMousePosition = getMousePosition;
+			_eventSystem = eventSystem;
 			
-			clickButtonPressedRx
+			ClickButtonPressedRx
 				.WhereTrue()
-				.Subscribe(_ => clickButtonPressedRx.Value = false);
+				.Subscribe(_ => ClickButtonPressedRx.Value = false);
 
 			Observable
 				.EveryUpdate()
 				.Subscribe(_ => Update());
 		}
-		
-		void Update()
+
+		private void Update()
 		{
-			var mousePos = getMousePosition();
-			var deltaMove = (cursorPositionRx.Value - mousePos).magnitude;
+			var mousePos = _getMousePosition();
+			var deltaMove = (CursorPositionRx.Value - mousePos).magnitude;
 			if (deltaMove < MoveThreshold)
 			{
-				if (disposables.IsEmpty())
+				if (_disposables.IsEmpty())
 				{
 					Observable
 						.Timer(TimeSpan.FromSeconds(ClickTimeout))
 						.Subscribe(_ => StartProgress())
-						.AddTo(disposables);
+						.AddTo(_disposables);
 				}
 			}
 			else
@@ -61,42 +62,42 @@ namespace Infrastructure.Input
 				ResetButton();
 			}
 			
-			cursorPositionRx.Value = mousePos;
+			CursorPositionRx.Value = mousePos;
 		}
 
-		void StartProgress()
+		private void StartProgress()
 		{
 			Observable.EveryUpdate()
 				.Select(_ => Time.deltaTime)
-				.Subscribe(dt => clickProgressRx.Value = clickProgressRx.Value.IfNone(0) + dt / TimeToClick)
-				.AddTo(disposables);
+				.Subscribe(dt => ClickProgressRx.Value = ClickProgressRx.Value.IfNone(0) + dt / TimeToClick)
+				.AddTo(_disposables);
 
 			Observable.Timer(TimeSpan.FromSeconds(TimeToClick))
 				.Subscribe(_ => SetButtonPressed())
-				.AddTo(disposables);
+				.AddTo(_disposables);
 		}
 
-		void SetButtonPressed()
+		private void SetButtonPressed()
 		{
-			clickButtonPressedRx.Value = true;
-			clickProgressRx.Value = None;
+			ClickButtonPressedRx.Value = true;
+			ClickProgressRx.Value = None;
 			
 			// EmulateClick();	
 			ResetButton();
 		}
-	
-		void ResetButton()
+
+		private void ResetButton()
 		{
-			clickProgressRx.Value = None;
-			disposables.Clear();
+			ClickProgressRx.Value = None;
+			_disposables.Clear();
 		}
 
-		void EmulateClick()
+		private void EmulateClick()
 		{
 			// var screenPoint = RectTransformUtility.WorldToScreenPoint(mainCamera, cursorPositionRx.Value);
-			var pointerEventData = new PointerEventData(eventSystem) { position = cursorPositionRx.Value };
+			var pointerEventData = new PointerEventData(_eventSystem) { position = CursorPositionRx.Value };
 
-			var ray = Camera.main.ScreenPointToRay(cursorPositionRx.Value);
+			var ray = Camera.main.ScreenPointToRay(CursorPositionRx.Value);
 			if (!Physics.Raycast(ray, out var hit)) return;
 			
 			hit.transform.MaybeComponent<Button>()

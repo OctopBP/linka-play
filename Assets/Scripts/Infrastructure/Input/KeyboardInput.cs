@@ -7,10 +7,10 @@ namespace Infrastructure.Input
 {
 	public class KeyboardInput : IInput
 	{
-		public ReactiveProperty<Vector2> cursorPositionRx { get; } = new();
-		public ReactiveProperty<bool> clickButtonPressedRx { get; } = new();
-
-		public ReactiveProperty<Option<float>> clickProgressRx { get; } = new();
+		public ReactiveProperty<Vector2> CursorPositionRx { get; } = new();
+		public ReactiveProperty<bool> ClickButtonPressedRx { get; } = new();
+		public ReactiveProperty<Option<float>> ClickProgressRx { get; } = new();
+		public ReactiveProperty<Option<Bounds>> MaybeSelectedBounds { get; } = new();
 
 		public KeyboardInput()
 		{
@@ -18,11 +18,11 @@ namespace Infrastructure.Input
 				.EveryUpdate()
 				.Subscribe(_ => Update());
 		}
-		
-		void Update()
+
+		private void Update()
 		{
-			cursorPositionRx.Value = UnityEngine.Input.mousePosition.XY();
-			clickButtonPressedRx.Value = UnityEngine.Input.GetMouseButtonDown(0);
+			CursorPositionRx.Value = UnityEngine.Input.mousePosition.XY();
+			ClickButtonPressedRx.Value = UnityEngine.Input.GetMouseButtonDown(0);
 		}
 	}
 }
