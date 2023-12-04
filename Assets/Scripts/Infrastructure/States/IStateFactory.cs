@@ -2,6 +2,6 @@ namespace Infrastructure.States
 {
 	public interface IStateFactory
 	{
-		public TState Create<TState>() where TState : class, IExitableState, new();
+		public TState Create<TState>() where TState : class, IExitableState;
 	}
 }

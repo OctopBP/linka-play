@@ -1,13 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Extensions;
-using Infrastructure.States;
 using UniRx;
 
 namespace Game.Letters
 {
 	[GenConstructor]
-	public partial class HoveredLetterTileState : IState
+	public partial class HoveredLetterTileState : ILetterGameState
 	{
 		private readonly LetterStateMachine stateMachine;
 		private readonly LetterTileView letterTile;

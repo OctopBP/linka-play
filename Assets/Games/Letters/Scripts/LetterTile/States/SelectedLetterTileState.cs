@@ -6,14 +6,13 @@ using DG.Tweening.Plugins.Options;
 using LanguageExt;
 using LanguageExt.SomeHelp;
 using Extensions;
-using Infrastructure.States;
 using UniRx;
 using UnityEngine;
 
 namespace Game.Letters
 {
 	[GenConstructor]
-	public partial class SelectedLetterTileState : IState
+	public partial class SelectedLetterTileState : ILetterGameState
 	{
 		private readonly LetterStateMachine stateMachine;
 		private readonly LetterTileView letterTile;

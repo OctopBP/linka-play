@@ -2,5 +2,5 @@ using Infrastructure.States;
 
 namespace Game.Letters
 {
-	public class LetterStateMachine : StateMachine { }
+	public class LetterStateMachine : StateMachine<ILetterGameState> { }
 }

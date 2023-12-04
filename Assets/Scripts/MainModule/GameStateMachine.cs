@@ -2,5 +2,6 @@ using Infrastructure.States;
 
 namespace Core
 {
-	public class GameStateMachine : StateMachine { }
+	public interface IGameState : IState { }
+	public class GameStateMachine : StateMachine<IGameState> { }
 }

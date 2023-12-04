@@ -1,10 +1,9 @@
 using Cysharp.Threading.Tasks;
-using Infrastructure.States;
 
 namespace Game.Letters
 {
 	[GenConstructor]
-	public partial class FinishLetterTileState : IState
+	public partial class FinishLetterTileState : ILetterGameState
 	{
 		private readonly LetterTileView letterTile;
 

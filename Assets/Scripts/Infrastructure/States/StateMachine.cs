@@ -5,44 +5,38 @@ using JetBrains.Annotations;
 
 namespace Infrastructure.States
 {
-    public abstract class StateMachine : IStateMachine
+    public abstract class StateMachine<TMachineState> : IStateMachine<TMachineState> where TMachineState : class, IState
     {
-        private readonly Dictionary<Type, IExitableState> registeredStates = new();
-        [CanBeNull] private IExitableState currentState;
+        private readonly Dictionary<Type, TMachineState> _registeredStates = new();
+        [CanBeNull] private IExitableState _currentState;
 
-        public async UniTask Enter<TState>() where TState : class, IState
+        public async UniTask Enter<TState>() where TState : class, TMachineState
         {
             var newState = await ChangeState<TState>();
             await newState.Enter();
         }
 
-        public async UniTask Enter<TState, TPayload>(TPayload payload) where TState : class, IPaylodedState<TPayload>
+        public void RegisterState<TState>(TState state) where TState : TMachineState
         {
-            var newState = await ChangeState<TState>();
-            await newState.Enter(payload);
+            _registeredStates.Add(typeof(TState), state);
         }
 
-        public void RegisterState<TState>(TState state) where TState : class, IExitableState
+        private async UniTask<TState> ChangeState<TState>() where TState : class, TMachineState
         {
-            registeredStates.Add(typeof(TState), state);
-        }
-
-        private async UniTask<TState> ChangeState<TState>() where TState : class, IExitableState
-        {
-            if (currentState != null)
+            if (_currentState != null)
             {
-                await currentState.Exit();
+                await _currentState.Exit();
             }
 
             var state = GetState<TState>();
-            currentState = state;
+            _currentState = state;
 
             return state;
         }
 
-        private TState GetState<TState>() where TState : class, IExitableState
+        private TState GetState<TState>() where TState : class, TMachineState
         {
-            return registeredStates[typeof(TState)] as TState;
+            return _registeredStates[typeof(TState)] as TState;
         }
     }
 }
