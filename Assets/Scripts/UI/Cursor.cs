@@ -15,8 +15,8 @@ namespace Core
 		[SerializeField] private Image bg, selectIndicator;
 		[SerializeField] private Image effect;
 		[SerializeField] private Image corners;
+		[SerializeField] private RectTransform pointer;
 
-		[MonoReadonly] private RectTransform _rect;
 		private IInput _input;
 
 		private Option<Sequence> _maybeClickSequence;
@@ -36,13 +36,10 @@ namespace Core
 			bg.SetActive();
 			selectIndicator.SetInactive();
 			effect.SetInactive();
-
-			// Init 
-			_rect = GetComponent<RectTransform>();
 			
 			// Subscribe to input
 			_input.ClickButtonPressedRx.WhereTrue().Subscribe(_ => OnSelect());
-			_input.CursorPositionRx.Subscribe(position => _rect.anchoredPosition = position);
+			_input.CursorPositionRx.Subscribe(position => pointer.anchoredPosition = position);
 
 			Option<Tween> maybeScaleTween = None;
 			_input.ClickProgressRx.Subscribe(maybeProgress => maybeProgress.Match(
@@ -66,7 +63,7 @@ namespace Core
 				Some: bounds =>
 				{
 					corners.SetActive(true);
-					corners.rectTransform.sizeDelta = bounds.size;
+					corners.rectTransform.sizeDelta = bounds.extents;
 					corners.rectTransform.anchoredPosition = bounds.center;
 				},
 				None: () => corners.SetActive(false))

@@ -1,3 +1,4 @@
+using Infrastructure.Input;
 using Zenject;
 
 namespace Infrastructure
@@ -7,7 +8,10 @@ namespace Infrastructure
         public override void InstallBindings()
         {
             Container.Bind<IRnd>().FromInstance(RandomAdapter.a(seed: 12345)).AsSingle();
-            Container.Bind<SceneLoader>().FromInstance(new()).AsSingle();
+            Container.Bind<SceneLoader>().FromNew().AsSingle();
+            Container.Bind<IRaycastService>().To<RaycastService>().AsSingle();
+            Container.Bind<ICameraService>().To<CameraService>().AsSingle();
+            Container.Bind<IInput>().To<MouseInput>().AsSingle();
         }
     }
 }
