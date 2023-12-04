@@ -12,21 +12,22 @@ namespace Core
 {
 	public class Cursor : MonoBehaviour
 	{
-		[SerializeField] Image bg, selectIndicator;
-		[SerializeField] Image effect;
+		[SerializeField] private Image bg, selectIndicator;
+		[SerializeField] private Image effect;
+		[SerializeField] private Image corners;
+		[SerializeField] private RectTransform pointer;
 
-		[MonoReadonly] RectTransform rect;
-		IInput input;
+		private IInput _input;
 
-		Option<Sequence> maybeClickSequence;
+		private Option<Sequence> _maybeClickSequence;
 		
 		[Inject]
-		void Construct(IInput input)
+		private void Construct(IInput input)
 		{
-			this.input = input;
+			_input = input;
 		}
-		
-		void Start()
+
+		private void Start()
 		{
 			// Disable default cursor
 			UnityEngine.Cursor.visible = false;
@@ -35,16 +36,13 @@ namespace Core
 			bg.SetActive();
 			selectIndicator.SetInactive();
 			effect.SetInactive();
-
-			// Init 
-			rect = GetComponent<RectTransform>();
 			
 			// Subscribe to input
-			input.clickButtonPressedRx.WhereTrue().Subscribe(_ => OnSelect());
-			input.cursorPositionRx.Subscribe(position => rect.anchoredPosition = position);
+			_input.ClickButtonPressedRx.WhereTrue().Subscribe(_ => OnSelect());
+			_input.CursorPositionRx.Subscribe(position => pointer.anchoredPosition = position);
 
 			Option<Tween> maybeScaleTween = None;
-			input.clickProgressRx.Subscribe(maybeProgress => maybeProgress.Match(
+			_input.ClickProgressRx.Subscribe(maybeProgress => maybeProgress.Match(
 				Some: progress =>
 				{
 					maybeScaleTween.IfSome(scaleTween => scaleTween.Kill());
@@ -60,11 +58,21 @@ namespace Core
 						.OnComplete(selectIndicator.SetInactive);
 				}
 			));
+
+			_input.MaybeSelectedBounds.Subscribe(maybeBounds => maybeBounds.Match(
+				Some: bounds =>
+				{
+					corners.SetActive(true);
+					corners.rectTransform.sizeDelta = bounds.extents;
+					corners.rectTransform.anchoredPosition = bounds.center;
+				},
+				None: () => corners.SetActive(false))
+			);
 		}
 
-		void OnSelect()
+		private void OnSelect()
 		{
-			maybeClickSequence.IfSome(clickSequence => clickSequence.Kill());
+			_maybeClickSequence.IfSome(clickSequence => clickSequence.Kill());
 
 			var clickSequence = DOTween.Sequence();
 			
@@ -76,7 +84,7 @@ namespace Core
 			clickSequence.Join(effect.transform.DOScale(1.5f, effectTime));
 			clickSequence.Join(effect.DOFade(0, effectTime));
 
-			maybeClickSequence = clickSequence;
+			_maybeClickSequence = clickSequence;
 		}
 	}
 }

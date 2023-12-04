@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   streakToWin: 5
-  letterRight: 65
-  letterLeft: 66
+  rightItem:
+    value: 58
+  leftItem:
+    value: 51

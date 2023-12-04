@@ -1,13 +1,10 @@
 using Tobii.Gaming;
-using UnityEngine.EventSystems;
 
 namespace Infrastructure.Input
 {
 	public class TobiiInput : OnlyMouseInput
 	{
-		public TobiiInput(EventSystem eventSystem) : base(
-			getMousePosition: () => TobiiAPI.GetGazePoint().Screen, 
-			eventSystem: eventSystem
-		) { }
+		public TobiiInput(ICameraService cameraService, IRaycastService raycastService) :
+			base(cameraService, raycastService, getMousePosition: () => TobiiAPI.GetGazePoint().Screen) { }
 	}
 }

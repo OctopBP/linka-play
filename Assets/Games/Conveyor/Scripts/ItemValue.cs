@@ -6,6 +6,6 @@ namespace Game.Conveyor
 	[Serializable]
 	public partial class ItemValue
 	{
-		[SerializeField, PublicAccessor] char value;
+		[SerializeField, PublicAccessor] private char value;
 	}
 }
