@@ -7,9 +7,11 @@ namespace Infrastructure
     {
         public override void InstallBindings()
         {
-            Container.Bind<IRnd>().FromInstance(RandomAdapter.a(seed: 12345));
-            Container.Bind<IInput>().FromInstance(new KeyboardInput());
-            Container.Bind<SceneLoader>().FromInstance(new());
+            Container.Bind<IRnd>().FromInstance(RandomAdapter.a(seed: 12345)).AsSingle();
+            Container.Bind<SceneLoader>().FromNew().AsSingle();
+            Container.Bind<IRaycastService>().To<RaycastService>().AsSingle();
+            Container.Bind<ICameraService>().To<CameraService>().AsSingle();
+            Container.Bind<IInput>().To<MouseInput>().AsSingle();
         }
     }
 }

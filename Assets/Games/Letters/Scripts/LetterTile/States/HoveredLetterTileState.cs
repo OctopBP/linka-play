@@ -1,35 +1,39 @@
 using System;
+using Cysharp.Threading.Tasks;
 using Extensions;
 using UniRx;
 
 namespace Game.Letters
 {
 	[GenConstructor]
-	public partial class HoveredLetterTileState : IState
+	public partial class HoveredLetterTileState : ILetterGameState
 	{
-		readonly LetterStateMachine stateMachine;
-		readonly LetterTileView letterTile;
-		readonly Settings settings;
-		readonly IObservable<bool> isHoveredRx;
+		private readonly LetterStateMachine stateMachine;
+		private readonly LetterTileView letterTile;
+		private readonly Settings settings;
+		private readonly IObservable<bool> isHoveredRx;
 
-		[GenConstructorIgnore] IDisposable hoverTimer, hoverRx;
+		[GenConstructorIgnore] private IDisposable hoverTimer, hoverRx;
 		
-		public void OnEnter()
+		public UniTask Enter()
 		{
-			letterTile._rockRenderer.material.color = letterTile._hoveredColor;
+			letterTile.RockRenderer.material.color = letterTile.HoveredColor;
 			
 			hoverTimer = Observable.Timer(settings.timeToSelect)
-				.Subscribe(_ => stateMachine.ChangeState(stateMachine.selectedState));
+				.Subscribe(_ => stateMachine.Enter<SelectedLetterTileState>().Forget());
 			
 			hoverRx = isHoveredRx
 				.WhereFalse()
-				.Subscribe(_ => stateMachine.ChangeState(stateMachine.defaultState));
+				.Subscribe(_ => stateMachine.Enter<DefaultLetterTileState>().Forget());
+			
+			return default;
 		}
 
-		public void OnExit()
+		public UniTask Exit()
 		{
 			hoverTimer.Dispose();
 			hoverRx.Dispose();
+			return default;
 		}
 	}
 }

@@ -12,26 +12,26 @@ namespace Game.Letters
 {
 	public class LevelBootstrap : MonoBehaviour
 	{
-		[SerializeField] LetterTileView letterTilePrefab;
-		[SerializeField] string lettersToSpawn;
-		[SerializeField] Transform lettersParent;
-		[SerializeField] Bounds placeBounds;
-		[SerializeField] Bounds targetBounds;
+		[SerializeField] private LetterTileView letterTilePrefab;
+		[SerializeField] private string lettersToSpawn;
+		[SerializeField] private Transform lettersParent;
+		[SerializeField] private Bounds placeBounds;
+		[SerializeField] private Bounds targetBounds;
 
-		readonly List<LetterTileView.Model> letters = new();
-		readonly Settings settings = new(timeToSelect: TimeSpan.FromSeconds(1), timeToDrop: TimeSpan.FromSeconds(1));
+		private readonly List<LetterTileView.Model> letters = new();
+		private readonly Settings settings = new(timeToSelect: TimeSpan.FromSeconds(1), timeToDrop: TimeSpan.FromSeconds(1));
 
-		IRnd rnd;
-		IInput input;
+		private IRnd rnd;
+		private IInput input;
 		
 		[Inject]
-		void Construct(IRnd rnd, IInput input)
+		public void Construct(IRnd rnd, IInput input)
 		{
 			this.rnd = rnd;
 			this.input = input;
 		}
-		
-		void Start()
+
+		private void Start()
 		{
 			foreach (var letter in lettersToSpawn)
 			{
@@ -43,14 +43,14 @@ namespace Game.Letters
 				letters.Add(letterModel);
 			}
 			
-			input.mousePositionRx.Subscribe(mousePosition =>
+			input.CursorPositionRx.Subscribe(mousePosition =>
 			{
 				var ray = Camera.main.ScreenPointToRay(mousePosition);
 				if (!Physics.Raycast(ray, out var hit)) return;
 				
 				foreach (var letter in letters)
 				{
-					var letterTransform = letter._backing.transform;
+					var letterTransform = letter.Backing.transform;
 					var isHovered = hit.transform == letterTransform;
 					var inTarget = targetBounds.Contains(letterTransform.position.WithZ(targetBounds.center.z));
 					letter.Update(
@@ -61,7 +61,7 @@ namespace Game.Letters
 			});
 		}
 
-		Vector3 RandomPos()
+		private Vector3 RandomPos()
 		{
 			var offset = placeBounds.center - placeBounds.size * 0.5f;
 			var x = offset.x + placeBounds.size.x * rnd.NextFloat() ;
@@ -69,13 +69,7 @@ namespace Game.Letters
 			return new(x, y, 0);
 		}
 
-		void Update()
-		{
-			// TODO: Move to input service
-			input.Update();	
-		}
-
-		void OnDrawGizmos()
+		private void OnDrawGizmos()
 		{
 			Gizmos.color = Color.yellow;
 			Gizmos.DrawWireCube(center: placeBounds.center, size: placeBounds.size);

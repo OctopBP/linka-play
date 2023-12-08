@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -11,38 +12,41 @@ using UnityEngine;
 namespace Game.Letters
 {
 	[GenConstructor]
-	public partial class SelectedLetterTileState : IState
+	public partial class SelectedLetterTileState : ILetterGameState
 	{
-		readonly LetterStateMachine stateMachine;
-		readonly LetterTileView letterTile;
-		readonly Settings settings;
-		readonly ReactiveProperty<Option<Vector3>> maybeMousePosition;
+		private readonly LetterStateMachine stateMachine;
+		private readonly LetterTileView letterTile;
+		private readonly Settings settings;
+		private readonly ReactiveProperty<Option<Vector3>> maybeMousePosition;
 
-		const float LerpSpeed = 0.5f;
-		const float ZOffset = -0.5f;
+		private const float ZOffset = -0.5f;
 
-		[GenConstructorIgnore] IDisposable mouseFollow;
-		[GenConstructorIgnore] Option<IDisposable> maybeHoldTimer;
-		[GenConstructorIgnore] TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
+		[GenConstructorIgnore] private IDisposable mouseFollow;
+		[GenConstructorIgnore] private Option<IDisposable> maybeHoldTimer;
+		[GenConstructorIgnore] private TweenerCore<Vector3, Vector3, VectorOptions> moveTween;
 		
-		public void OnEnter()
+		public UniTask Enter()
 		{
-			letterTile._rockRenderer.material.color = letterTile._selectedColor;
+			letterTile.RockRenderer.material.color = letterTile.SelectedColor;
 			mouseFollow = maybeMousePosition.Collect(position =>
 			{
 				maybeHoldTimer.IfSome(holdTimer => holdTimer.Dispose());
 				maybeHoldTimer = Observable.Timer(settings.timeToSelect)
-					.Subscribe(_ => stateMachine.ChangeState(stateMachine.defaultState))
+					.Subscribe(_ => stateMachine.Enter<DefaultLetterTileState>().Forget())
 					.ToSome();
 
 				letterTile.transform.localPosition = position.WithZ(ZOffset);
 			});
+
+			return default;
 		}
 
-		public void OnExit()
+		public UniTask Exit()
 		{
 			mouseFollow.Dispose();
-			letterTile.transform.DOLocalMoveZ(0, .2f); 
+			letterTile.transform.DOLocalMoveZ(0, .2f);
+			
+			return default;
 		}
 	}
 }
