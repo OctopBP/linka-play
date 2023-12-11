@@ -17,8 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 2117fb5b34bb64448baa7bb3ca5e70d6
   m_SerializeEntries:
-  - m_GUID: 6f4157e6ee3394a5e834121d7badde2f
-    m_Address: Assets
+  - m_GUID: 4214063b134314569bc77d349120655d
+    m_Address: ItemOnConveyor
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

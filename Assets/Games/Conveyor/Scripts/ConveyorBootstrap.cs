@@ -25,13 +25,13 @@ namespace Game.Conveyor
             _itemFactory = itemFactory;
         }
 
-        private void Start()
+        private async void Start()
         {
-            SetupStateMachine();
-            _itemFactory.Init(itemOnConveyorPrefab);
+            await _itemFactory.InitAsync(itemOnConveyorPrefab);
+            await SetupStateMachine();
         }
 
-        private void SetupStateMachine()
+        private async UniTask SetupStateMachine()
         {
             _conveyorGameStateMachine.RegisterState(_stateFactory.Create<BootstrapState>());
             _conveyorGameStateMachine.RegisterState(_stateFactory.Create<NextItemDeliveryState>());
@@ -39,7 +39,7 @@ namespace Game.Conveyor
             _conveyorGameStateMachine.RegisterState(_stateFactory.Create<WinState>());
             _conveyorGameStateMachine.RegisterState(_stateFactory.Create<LoseState>());
 
-            _conveyorGameStateMachine.Enter<BootstrapState>().Forget();
+            await _conveyorGameStateMachine.Enter<BootstrapState>();
         }
     }
 }

@@ -4,11 +4,11 @@ namespace Game.Conveyor
 {
     public partial class ConveyorPath : MonoBehaviour
     {
-        [SerializeField, PublicAccessor] Vector3 spawnPoint, stopPoint;
-        [SerializeField, PublicAccessor] Vector3 leftPointUp, leftPointDown;
-        [SerializeField, PublicAccessor] Vector3 rightPointUp, rightPointDown;
+        [SerializeField, PublicAccessor] private Vector3 spawnPoint, stopPoint;
+        [SerializeField, PublicAccessor] private Vector3 leftPointUp, leftPointDown;
+        [SerializeField, PublicAccessor] private Vector3 rightPointUp, rightPointDown;
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Gizmos.DrawLine(spawnPoint, stopPoint);
             Gizmos.DrawLine(stopPoint, leftPointUp);
@@ -16,12 +16,13 @@ namespace Game.Conveyor
             Gizmos.DrawLine(leftPointUp, leftPointDown);
             Gizmos.DrawLine(rightPointUp, rightPointDown);
             
-            Gizmos.DrawSphere(spawnPoint, 0.1f);
-            Gizmos.DrawSphere(stopPoint, 0.1f);
-            Gizmos.DrawSphere(leftPointUp, 0.1f);
-            Gizmos.DrawSphere(leftPointDown, 0.1f);
-            Gizmos.DrawSphere(rightPointUp, 0.1f);
-            Gizmos.DrawSphere(rightPointDown, 0.1f);
+            const float sphereSize = 0.075f;
+            Gizmos.DrawSphere(spawnPoint, sphereSize);
+            Gizmos.DrawSphere(stopPoint, sphereSize);
+            Gizmos.DrawSphere(leftPointUp, sphereSize);
+            Gizmos.DrawSphere(leftPointDown, sphereSize);
+            Gizmos.DrawSphere(rightPointUp, sphereSize);
+            Gizmos.DrawSphere(rightPointDown, sphereSize);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Game.Conveyor
 {
     public interface IItemFactory<TAsset> where TAsset : class
     {
-        void Init(AssetReference itemOnConveyorPrefab);
+        UniTask InitAsync(AssetReference assetReference);
         UniTask<TAsset> Create();
     }
 }
