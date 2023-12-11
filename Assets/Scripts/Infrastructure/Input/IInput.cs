@@ -21,5 +21,7 @@ namespace Infrastructure.Input
 		ReactiveProperty<Option<float>> ClickProgressRx { get; }
 		
 		ReactiveProperty<Option<Bounds>> MaybeSelectedBounds { get; }
+
+		ReactiveProperty<bool> Enabled { get; }
 	}
 }

@@ -6,7 +6,9 @@ namespace Game.Conveyor
 	[Serializable]
 	public partial class ItemValue
 	{
-		[SerializeField, PublicAccessor] char value;
-		[SerializeField, PublicAccessor] Emoji emoji;
+		[SerializeField, PublicAccessor] private char value;
+		[SerializeField, PublicAccessor] private Emoji emoji;
+
+		public override string ToString() => value.ToString();
 	}
 }

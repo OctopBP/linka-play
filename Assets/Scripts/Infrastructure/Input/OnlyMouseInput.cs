@@ -15,6 +15,7 @@ namespace Infrastructure.Input
 		public ReactiveProperty<bool> ClickButtonPressedRx { get; } = new();
 		public ReactiveProperty<Option<float>> ClickProgressRx { get; } = new();
 		public ReactiveProperty<Option<Bounds>> MaybeSelectedBounds { get; } = new();
+		public ReactiveProperty<bool> Enabled { get; } = new();
 		
 		/// <summary> Hom much time we should look at one point to emit mouse click. </summary>
 		private const float TimeToClick = 1.5f;
@@ -49,6 +50,7 @@ namespace Infrastructure.Input
 
 			Observable
 				.EveryUpdate()
+				.Where(_ => Enabled.Value)
 				.Subscribe(_ => Update());
 
 			_deltaMoveRx
@@ -69,7 +71,7 @@ namespace Infrastructure.Input
 			maybeCursorSelectable.Match(
 				Some: selectable =>
 				{
-					TryToStartProgressTimer();
+					TryToStartProgressTimer(selectable);
 					MaybeSelectedBounds.Value = selectable.MaybeBounds;
 				},
 				None: () =>
@@ -80,18 +82,18 @@ namespace Infrastructure.Input
 			);	
 		}
 
-		private void TryToStartProgressTimer()
+		private void TryToStartProgressTimer(ICursorSelectable selectable)
 		{
 			if (_progressDisposables.IsEmpty())
 			{
 				Observable
 					.Timer(TimeSpan.FromSeconds(ClickTimeout))
-					.Subscribe(_ => StartProgress())
+					.Subscribe(_ => StartProgress(selectable))
 					.AddTo(_progressDisposables);
 			}
 		}
 
-		private void StartProgress()
+		private void StartProgress(ICursorSelectable selectable)
 		{
 			Observable.EveryUpdate()
 				.Select(_ => Time.deltaTime)
@@ -99,14 +101,16 @@ namespace Infrastructure.Input
 				.AddTo(_progressDisposables);
 
 			Observable.Timer(TimeSpan.FromSeconds(TimeToClick))
-				.Subscribe(_ => SetButtonPressed())
+				.Subscribe(_ => SetButtonPressed(selectable))
 				.AddTo(_progressDisposables);
 		}
 
-		private void SetButtonPressed()
+		private void SetButtonPressed(ICursorSelectable selectable)
 		{
 			ClickButtonPressedRx.Value = true;
 			ClickProgressRx.Value = None;
+			
+			selectable.OnSelect();
 			
 			ResetButton();
 		}

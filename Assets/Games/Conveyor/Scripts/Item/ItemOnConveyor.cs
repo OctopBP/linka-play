@@ -5,14 +5,8 @@ namespace Game.Conveyor
 {
 	public class ItemOnConveyor : MonoBehaviour
 	{
-		[SerializeField] TMP_Text text;
-
-		public class Model
-		{
-			public Model(ItemOnConveyor backing, ItemValue itemValue)
-			{
-				backing.text.SetText(itemValue.Value.ToString());
-			}
-		}
+		[SerializeField] private TMP_Text text;
+		
+		public void SetItemValue(ItemValue itemValue) => text.SetText(itemValue.ToString());
 	}
 }

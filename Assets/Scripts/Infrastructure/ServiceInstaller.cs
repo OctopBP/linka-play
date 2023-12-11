@@ -7,11 +7,13 @@ namespace Infrastructure
     {
         public override void InstallBindings()
         {
+            Container.Bind<ILog>().To<UnityLogger>().AsSingle();
             Container.Bind<IRnd>().FromInstance(RandomAdapter.a(seed: 12345)).AsSingle();
             Container.Bind<SceneLoader>().FromNew().AsSingle();
             Container.Bind<IRaycastService>().To<RaycastService>().AsSingle();
             Container.Bind<ICameraService>().To<CameraService>().AsSingle();
             Container.Bind<IInput>().To<MouseInput>().AsSingle();
+            Container.Bind<IAssetProvider>().To<AssetProvider>().AsSingle();
         }
     }
 }

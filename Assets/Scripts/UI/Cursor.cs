@@ -36,6 +36,8 @@ namespace Core
 			bg.SetActive();
 			selectIndicator.SetInactive();
 			effect.SetInactive();
+
+			_input.Enabled.Subscribe(gameObject.SetActive);	
 			
 			// Subscribe to input
 			_input.ClickButtonPressedRx.WhereTrue().Subscribe(_ => OnSelect());

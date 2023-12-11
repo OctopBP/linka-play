@@ -11,11 +11,13 @@ namespace Infrastructure.Input
 		public ReactiveProperty<bool> ClickButtonPressedRx { get; } = new();
 		public ReactiveProperty<Option<float>> ClickProgressRx { get; } = new();
 		public ReactiveProperty<Option<Bounds>> MaybeSelectedBounds { get; } = new();
+		public ReactiveProperty<bool> Enabled { get; } = new();
 
 		public KeyboardInput()
 		{
 			Observable
 				.EveryUpdate()
+				.Where(_ => Enabled.Value)
 				.Subscribe(_ => Update());
 		}
 
