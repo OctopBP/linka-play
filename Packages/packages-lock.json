@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "5cc97c7f0085624b6ef57853d70b404440060cef"
     },
+    "com.scellecs.morpeh": {
+      "version": "https://github.com/scellecs/morpeh.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "bb2949621f912a89222df3de1dea341b016cc877"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
