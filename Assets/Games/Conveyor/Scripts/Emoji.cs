@@ -7,4 +7,6 @@ public class Emoji
     /// For example: \U0001F63C for 😼
     /// </summary>
     public string code;
+
+    public override string ToString() => code;
 }

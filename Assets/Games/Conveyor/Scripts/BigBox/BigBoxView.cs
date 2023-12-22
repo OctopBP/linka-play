@@ -12,6 +12,6 @@ namespace Game.Conveyor
 
         public void Select() => OnSelect.OnNext(Unit.Default);
         
-        public void SetText(ItemValue itemValue) => text.SetText(itemValue.Value.ToString());
+        public void SetText(ItemValue itemValue) => text.SetText(itemValue.ToString());
     }
 }

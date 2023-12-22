@@ -9,6 +9,6 @@ namespace Game.Conveyor
 		[SerializeField, PublicAccessor] private char value;
 		[SerializeField, PublicAccessor] private Emoji emoji;
 
-		public override string ToString() => value.ToString();
+		public override string ToString() => emoji.ToString();
 	}
 }

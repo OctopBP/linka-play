@@ -35,6 +35,6 @@ namespace Game.Conveyor
             await _itemStateMachine.Enter<InitState>();
         }
         
-        public void SetText(ItemValue itemValue) => text.SetText(itemValue.Value.ToString());
+        public void SetText(ItemValue itemValue) => text.SetText(itemValue.ToString());
     }
 }
