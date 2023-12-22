@@ -8,10 +8,10 @@ namespace Game.Conveyor
     {
         [SerializeField, PublicAccessor] private LevelConfig levelConfig;
 
-        private readonly IRnd _rnd;
+        private IRnd _rnd;
 
         [Inject]
-        public LevelConfigProvider(IRnd rnd)
+        public void Construct(IRnd rnd)
         {
             _rnd = rnd;
         }

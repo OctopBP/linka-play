@@ -5,7 +5,7 @@ using Infrastructure;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
-using Object = UnityEngine.Object;
+using Zenject;
 
 namespace Game.Conveyor
 {
@@ -13,11 +13,13 @@ namespace Game.Conveyor
 	{
 		private readonly IAssetProvider _assetProvider;
 		private readonly GameAssets _gameAssets;
+		private readonly DiContainer _diContainer;
 		
 		private IObjectPool<TItem> _pool;
 		
-		public ItemsFactoryWithPool(IAssetProvider assetProvider, GameAssets gameAssets)
+		public ItemsFactoryWithPool(DiContainer diContainer, IAssetProvider assetProvider, GameAssets gameAssets)
 		{
+			_diContainer = diContainer;
 			_assetProvider = assetProvider;
 			_gameAssets = gameAssets;
 		}
@@ -28,7 +30,7 @@ namespace Game.Conveyor
 			var prefab = go.GetComponent<TItem>();
 
 			_pool = new ObjectPool<TItem>(
-				createFunc: () => Object.Instantiate(prefab),
+				createFunc: () => _diContainer.InstantiatePrefabForComponent<TItem>(prefab),
 				actionOnGet: item => item.SetActive(),
 				actionOnRelease: item => item.SetInactive(),
 				defaultCapacity: 2

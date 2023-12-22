@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.States;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -15,6 +16,8 @@ namespace Game.Conveyor
         private IItemFactory<BigBoxView> _boxFactory;
         private LevelConfigProvider _levelConfigProvider;
 
+        private readonly CompositeDisposable _disposable = new();
+        
         [Inject]
         private void Construct(
             ConveyorGameStateMachine conveyorGameStateMachine, IStateFactory stateFactory,
@@ -47,6 +50,10 @@ namespace Game.Conveyor
             var boxRight = await _boxFactory.Create();
             boxRight.transform.position = rightBoxPoint.position;
             boxRight.SetText(_levelConfigProvider.LevelConfig.RightItem);
+
+            boxRight.OnSelect
+                .Subscribe(_ => _conveyorGameStateMachine.Enter<NextItemDeliveryState>().Forget())
+                .AddTo(_disposable);
         }
 
         private async UniTask SetupStateMachine()

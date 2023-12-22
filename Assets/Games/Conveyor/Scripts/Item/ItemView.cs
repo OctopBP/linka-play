@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Game.Conveyor
 {
-    public class ItemView : MonoBehaviour, IItemView
+    public class ItemView : MonoBehaviour
     {
         [SerializeField] private TMP_Text text;
         
@@ -16,8 +16,8 @@ namespace Game.Conveyor
         [Inject]
         private void Construct(ItemStateMachine itemStateMachine, IStateFactory stateFactory)
         {
-            _stateFactory = stateFactory;
             _itemStateMachine = itemStateMachine;
+            _stateFactory = stateFactory;
         }
 
         private async void Start()
