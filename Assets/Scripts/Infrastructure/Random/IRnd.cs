@@ -4,5 +4,6 @@ namespace Infrastructure
 	{
 		float NextFloat();
 		double NextDouble();
+		bool NextBool();
 	}
 }

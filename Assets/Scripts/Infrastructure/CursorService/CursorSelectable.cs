@@ -1,6 +1,7 @@
 using System.Linq;
 using LanguageExt;
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 namespace Infrastructure.CursorService
@@ -8,6 +9,8 @@ namespace Infrastructure.CursorService
     public class CursorSelectable : MonoBehaviour, ICursorSelectable
     {
         [SerializeField] private Collider collider;
+        [SerializeField] private UnityEvent onSelect;
+        [SerializeField] private UnityEvent onHover;
 
         private readonly Vector3[] _boundsScreenPoints = new Vector3[8];
         private ICameraService _cameraService;
@@ -55,7 +58,7 @@ namespace Infrastructure.CursorService
             }
         }
         
-        public void OnHover() { }
-        public void OnSelect() { }
+        public void OnHover() => onHover?.Invoke();
+        public void OnSelect() => onSelect?.Invoke();
     }
 }

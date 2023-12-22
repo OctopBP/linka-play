@@ -7,13 +7,11 @@ namespace Game.Conveyor
     public class SelectBoxState : IConveyorGameState
     {
         private readonly ILog _log;
-        private readonly ConveyorPath _conveyorPath;
-        private IInput _input;
+        private readonly IInput _input;
 
-        public SelectBoxState(ILog log, ConveyorPath conveyorPath, IInput input)
+        public SelectBoxState(ILog log, IInput input)
         {
             _log = log;
-            _conveyorPath = conveyorPath;
             _input = input;
         }
 
