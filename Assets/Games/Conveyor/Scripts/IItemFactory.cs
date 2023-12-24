@@ -7,6 +7,7 @@ namespace Game.Conveyor
     public interface IItemFactory<TAsset> where TAsset : class
     {
         UniTask InitAsync(Func<GameAssets, AssetReference> extractAsset);
-        UniTask<TAsset> Create();
+        TAsset Create();
+        void Release(TAsset asset);
     }
 }

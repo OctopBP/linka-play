@@ -16,6 +16,7 @@ namespace Infrastructure
     public class LogTag
     {
         public static readonly LogTag Default = new LogTag("Default");
+        public static readonly LogTag Item = new LogTag("Item", Color.cyan);
         
         private readonly string _tagName;
         private readonly Color _color;

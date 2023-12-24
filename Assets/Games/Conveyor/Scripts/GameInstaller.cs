@@ -21,6 +21,8 @@ namespace Game.Conveyor
 			Container.Bind<IStateFactory>().To<StateFactory>().FromNew().AsSingle();
 			Container.Bind<ConveyorGameStateMachine>().To<ConveyorGameStateMachine>().FromNew().AsSingle();
 			
+			Container.Bind<BoxesStore>().To<BoxesStore>().FromNew().AsSingle();
+			
 			Container.Bind<IItemFactory<ItemView>>().To<ItemsFactoryWithPool<ItemView>>().FromNew().AsSingle();
 			Container.Bind<IItemFactory<BigBoxView>>().To<ItemsFactoryWithPool<BigBoxView>>().FromNew().AsSingle();
 		}

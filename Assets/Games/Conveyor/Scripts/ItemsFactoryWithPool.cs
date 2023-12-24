@@ -37,6 +37,7 @@ namespace Game.Conveyor
 			);
 		}
 
-		public async UniTask<TItem> Create() => _pool.Get();
+		public TItem Create() => _pool.Get();
+		public void Release(TItem item) => _pool.Release(item);
 	}
 }

@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using Infrastructure;
 using Infrastructure.Input;
 
@@ -9,18 +8,16 @@ namespace Game.Conveyor
     {
         private readonly ConveyorGameStateMachine _stateMachine;
         private readonly IItemFactory<ItemView> _itemFactory;
-        private readonly ConveyorPath _conveyorPath;
         private readonly IInput _input;
         private readonly ILog _log;
 
         protected NextItemDeliveryState(
             ConveyorGameStateMachine stateMachine, IItemFactory<ItemView> itemFactory,
-            ConveyorPath conveyorPath, IInput input, ILog log
+            IInput input, ILog log
         )
         {
             _stateMachine = stateMachine;
             _itemFactory = itemFactory;
-            _conveyorPath = conveyorPath;
             _input = input;
             _log = log;
         }
@@ -30,13 +27,12 @@ namespace Game.Conveyor
             _log.Log("Next Item Delivery State Enter()");
             
             _input.Enabled.Value = false;
-            
-            var newItem = await _itemFactory.Create();
-            newItem.transform.position = _conveyorPath.SpawnPoint;
-            
-            // _boxesStore.Boxes.Add(newItem);
-            
-            await newItem.transform.DOMove(_conveyorPath.StopPoint, 3f);
+
+            var item = _itemFactory.Create();
+
+            // Need this for setup item state machine
+            await UniTask.Yield();
+            await item.Init();
             
             await _stateMachine.Enter<SelectBoxState>();
         }

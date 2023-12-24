@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Infrastructure.States;
 using UniRx;
@@ -15,6 +16,7 @@ namespace Game.Conveyor
         private IItemFactory<ItemView> _itemFactory;
         private IItemFactory<BigBoxView> _boxFactory;
         private LevelConfigProvider _levelConfigProvider;
+        private BoxesStore _boxesStore;
 
         private readonly CompositeDisposable _disposable = new();
         
@@ -22,7 +24,7 @@ namespace Game.Conveyor
         private void Construct(
             ConveyorGameStateMachine conveyorGameStateMachine, IStateFactory stateFactory,
             IItemFactory<ItemView> itemFactory, IItemFactory<BigBoxView> boxFactory,
-            LevelConfigProvider levelConfigProvider
+            LevelConfigProvider levelConfigProvider, BoxesStore boxesStore
         )
         {
             _stateFactory = stateFactory;
@@ -30,6 +32,7 @@ namespace Game.Conveyor
             _itemFactory = itemFactory;
             _boxFactory = boxFactory;
             _levelConfigProvider = levelConfigProvider;
+            _boxesStore = boxesStore;
         }
 
         private async void Start()
@@ -42,17 +45,24 @@ namespace Game.Conveyor
         private async UniTask SetupBigBoxes()
         {
             await _boxFactory.InitAsync(ga => ga.BigBox);
+            await SetupBigBox(spawnPoint: rightBoxPoint, boxPlace: BoxPlace.Right, getValue: lc => lc.RightItem);
+            await SetupBigBox(spawnPoint: leftBoxPoint, boxPlace: BoxPlace.Left, getValue: lc => lc.LeftItem);
+        }
 
-            var boxLeft = await _boxFactory.Create();
-            boxLeft.transform.position = leftBoxPoint.position;
-            await boxLeft.SetValue(_levelConfigProvider.LevelConfig.LeftItem);
+        private async UniTask SetupBigBox(Transform spawnPoint, BoxPlace boxPlace, Func<LevelConfig, ItemValue> getValue)
+        {
+            var nexBox = _boxFactory.Create();
+            nexBox.transform.position = spawnPoint.position;
+            nexBox.transform.rotation = spawnPoint.rotation;
             
-            var boxRight = await _boxFactory.Create();
-            boxRight.transform.position = rightBoxPoint.position;
-            await boxRight.SetValue(_levelConfigProvider.LevelConfig.RightItem);
+            await nexBox.SetValue(getValue(_levelConfigProvider.LevelConfig));
 
-            boxRight.OnSelect
-                .Subscribe(_ => _conveyorGameStateMachine.Enter<NextItemDeliveryState>().Forget())
+            nexBox.OnSelect
+                .Subscribe(_ =>
+                {
+                    _boxesStore.ActiveBoxes.IfSome(box => box.MoveToBox(boxPlace));
+                    _conveyorGameStateMachine.Enter<NextItemDeliveryState>().Forget();
+                })
                 .AddTo(_disposable);
         }
 

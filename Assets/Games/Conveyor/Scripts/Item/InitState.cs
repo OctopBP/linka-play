@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Infrastructure;
 
 namespace Game.Conveyor
 {
@@ -8,24 +9,29 @@ namespace Game.Conveyor
         private readonly ItemView _itemView;
         private readonly LevelConfigProvider _levelConfigProvider;
         private readonly ConveyorPath _conveyorPath;
+        private readonly ILog _log;
 
         public InitState(
             ItemStateMachine itemStateMachine, ItemView itemView, LevelConfigProvider levelConfigProvider,
-            ConveyorPath conveyorPath
+            ConveyorPath conveyorPath, ILog log
         )
         {
             _itemStateMachine = itemStateMachine;
             _itemView = itemView;
             _levelConfigProvider = levelConfigProvider;
             _conveyorPath = conveyorPath;
+            _log = log;
         }
 
         public async UniTask Enter()
         {
-            var itemValue = _levelConfigProvider.GetRandomItemValue();
-            _itemView.SetValue(itemValue);
+            _log.Log("InitState Enter()", LogTag.Item);
+            
             _itemView.transform.position = _conveyorPath.SpawnPoint;
             
+            var itemValue = _levelConfigProvider.GetRandomItemValue();
+            await _itemView.SetValue(itemValue);
+
             await _itemStateMachine.Enter<MoveToStopPointState>();
         }
 

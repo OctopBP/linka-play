@@ -1,16 +1,9 @@
-using System.Collections.Generic;
+using LanguageExt;
 
 namespace Game.Conveyor
 {
     public class BoxesStore
     {
-        public readonly List<ItemView> Boxes = new();
-
-        public BoxesStore() { }
-
-        public void NextState()
-        {
-            
-        }
+        public Option<ItemView> ActiveBoxes = new();
     }
 }

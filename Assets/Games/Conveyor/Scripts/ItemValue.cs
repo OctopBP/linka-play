@@ -7,6 +7,8 @@ namespace Game.Conveyor
 	[Serializable]
 	public partial class ItemValue
 	{
-		[SerializeField, PublicAccessor] private AssetReferenceSprite emojiSprite;
+		[SerializeField] private AssetReferenceSprite emojiSprite;
+
+		public string SpriteName => emojiSprite.SubObjectName;
 	}
 }

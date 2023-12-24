@@ -129,6 +129,30 @@ MonoBehaviour:
     m_SerializedLabels:
     - Emoji
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74545bb117cc94b15938060fda7b5be9
+    m_Address: santa
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 967b6530d7bbb473490f6f238214a1d9
+    m_Address: gift
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2650d1a3ff8a94a34b88b44440a6e33b
+    m_Address: fireworks
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65aba61af07ee42c38dd370208b2499e
+    m_Address: christmas_tree
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 566ad329806974903bbec765b2d45d20, type: 2}
   m_SchemaSet:

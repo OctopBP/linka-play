@@ -11,6 +11,7 @@ namespace Game.Conveyor
 		public override void InstallBindings()
 		{
 			Container.Bind<ItemView>().FromInstance(itemView).AsSingle();
+			Container.Bind<ItemStore>().FromNew().AsSingle();
 			
 			Container.Bind<IStateFactory>().To<StateFactory>().FromNew().AsSingle();
 			Container.Bind<ItemStateMachine>().To<ItemStateMachine>().FromNew().AsSingle();

@@ -25,7 +25,7 @@ namespace Game.Conveyor
         
         public async UniTask SetValue(ItemValue itemValue)
         {
-            image.sprite = await _assetProvider.Load<Sprite>(itemValue.EmojiSprite);
+            image.sprite = await _assetProvider.Load<Sprite>(itemValue.SpriteName);
         }
     }
 }
