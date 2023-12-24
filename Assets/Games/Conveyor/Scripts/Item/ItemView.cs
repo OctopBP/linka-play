@@ -1,23 +1,28 @@
 using Cysharp.Threading.Tasks;
+using Infrastructure;
 using Infrastructure.States;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Game.Conveyor
 {
     public class ItemView : MonoBehaviour
     {
-        [SerializeField] private TMP_Text text;
+        [SerializeField] private Image image;
         
         private IStateFactory _stateFactory;
         private ItemStateMachine _itemStateMachine;
+        private IAssetProvider _assetProvider;
 
         [Inject]
-        private void Construct(ItemStateMachine itemStateMachine, IStateFactory stateFactory)
+        private void Construct(
+            ItemStateMachine itemStateMachine, IStateFactory stateFactory, IAssetProvider assetProvider
+        )
         {
             _itemStateMachine = itemStateMachine;
             _stateFactory = stateFactory;
+            _assetProvider = assetProvider;
         }
 
         private async void Start()
@@ -35,6 +40,9 @@ namespace Game.Conveyor
             await _itemStateMachine.Enter<InitState>();
         }
         
-        public void SetText(ItemValue itemValue) => text.SetText(itemValue.ToString());
+        public async UniTask SetValue(ItemValue itemValue)
+        {
+            image.sprite = await _assetProvider.Load<Sprite>(itemValue.EmojiSprite);
+        }
     }
 }

@@ -14,10 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   streakToWin: 5
   rightItem:
-    value: 66
-    emoji:
-      code: \U0001F63C
+    emojiSprite:
+      m_AssetGUID: 6247526baa567498d854c1b846731118
+      m_SubObjectName: dog
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      m_EditorAssetChanged: 1
   leftItem:
-    value: 78
-    emoji:
-      code: "\U0001F34E"
+    emojiSprite:
+      m_AssetGUID: 6501d3719fab542779c58c9f59bb7a7b
+      m_SubObjectName: cat
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      m_EditorAssetChanged: 1

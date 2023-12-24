@@ -23,7 +23,7 @@ namespace Game.Conveyor
         public async UniTask Enter()
         {
             var itemValue = _levelConfigProvider.GetRandomItemValue();
-            _itemView.SetText(itemValue);
+            _itemView.SetValue(itemValue);
             _itemView.transform.position = _conveyorPath.SpawnPoint;
             
             await _itemStateMachine.Enter<MoveToStopPointState>();

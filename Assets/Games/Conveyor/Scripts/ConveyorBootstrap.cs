@@ -45,11 +45,11 @@ namespace Game.Conveyor
 
             var boxLeft = await _boxFactory.Create();
             boxLeft.transform.position = leftBoxPoint.position;
-            boxLeft.SetText(_levelConfigProvider.LevelConfig.LeftItem);
+            await boxLeft.SetValue(_levelConfigProvider.LevelConfig.LeftItem);
             
             var boxRight = await _boxFactory.Create();
             boxRight.transform.position = rightBoxPoint.position;
-            boxRight.SetText(_levelConfigProvider.LevelConfig.RightItem);
+            await boxRight.SetValue(_levelConfigProvider.LevelConfig.RightItem);
 
             boxRight.OnSelect
                 .Subscribe(_ => _conveyorGameStateMachine.Enter<NextItemDeliveryState>().Forget())

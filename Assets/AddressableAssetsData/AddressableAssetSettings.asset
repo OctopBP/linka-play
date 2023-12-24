@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: ff5b843dadf6346f880d471aba63d492
   m_currentHash:
     serializedVersion: 2
-    Hash: b3020f423a1ab07d3164b4413e8575ab
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -89,6 +89,7 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Emoji
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 083be8d1e32534fb4853df84d10a5a22, type: 2}

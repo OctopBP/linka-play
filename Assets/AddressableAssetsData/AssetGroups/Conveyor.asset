@@ -27,6 +27,108 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8eae878fa570b459db563bbc40fd1b07
+    m_Address: emoji_animals
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36d0419c944a942229909cdb7bcbfee6
+    m_Address: koala
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 948dec1252ed94dad8895f3272e6e657
+    m_Address: rabbit
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 910579980ddb54b2db7a5177ea466d6a
+    m_Address: cow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0055442bc36e14ee897ff3e834d4cba5
+    m_Address: chicken
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7b9da3a5b4784487bc0ec8ed110246a
+    m_Address: octopus
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6247526baa567498d854c1b846731118
+    m_Address: dog
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d84dbbd718f274e0685434fe9ad5c82d
+    m_Address: fox_face
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b0df5faae50c49f786aaa8884d44532
+    m_Address: lion_face
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c90af7cf2d40d4bb3990f62a9509b47e
+    m_Address: frog
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92de3019be53b4138a47ead9be64e9ae
+    m_Address: horse
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aadca445757f1463fa35c73bbc194aef
+    m_Address: hamster
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5615f2df0772948b98a1f18a53eab66a
+    m_Address: tiger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6501d3719fab542779c58c9f59bb7a7b
+    m_Address: cat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a09e9196cab8a4204ba387d1f6309eaa
+    m_Address: pig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cd962d4f1c274961be7f6e2ffa2dd84
+    m_Address: panda_face
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 995f864263e2744cd81ccf402ea35f67
+    m_Address: bear
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Emoji
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 566ad329806974903bbec765b2d45d20, type: 2}
   m_SchemaSet:
